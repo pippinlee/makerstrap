@@ -8,21 +8,24 @@
   },
   "main": "less/makerstrap.less",
   "scripts": {
+    "start": "npm-run-all --parallel server watch:*",
+    "less-development": "autoless --source-map --no-watch demo/less/ demo/compiled/",
+    "watch:demo": "autoless --source-map demo/less/ && npm run less-development",
+    "watch:base": "autoless --source-map less/ && npm run less-development ",
+    "build": "npm run less-development",
+    "build:deploy": "npm run build:copy && build:version",
+    "build:copy": "cpx \"**/*\" deploy/latest/",
+    "build:version": "cpx \"dist/**/*\" deploy/pkg-version/",
+    "server": "node demo/server.js",
     "postinstall": "bower install"
   },
   "author": "@k88hudson",
   "devDependencies": {
-    "express": "3.4.8",
+    "autoless": "^0.1.7",
     "bower": "1.3.8",
-    "grunt": "0.4.2",
-    "grunt-contrib-less": "0.10.0",
-    "grunt-contrib-watch": "0.5.3",
-    "grunt-develop": "~0.3.0",
-    "grunt-shell-spawn": "~0.3.0",
-    "grunt-contrib-copy": "^0.5.0",
-    "time-grunt": "^0.3.1",
-    "grunt-filesize": "0.0.4",
-    "jit-grunt": "^0.6.0"
+    "cpx": "^1.2.1",
+    "express": "3.4.8",
+    "npm-run-all": "^1.2.11"
   },
   "engines": {
     "node": ">=0.10"
